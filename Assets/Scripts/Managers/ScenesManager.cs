@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,7 +23,11 @@ public class ScenesManager : MonoBehaviour
 
     public void LoadNextScene()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        var activeScene = SceneManager.GetActiveScene();
+        if (activeScene.buildIndex < Enum.GetNames(typeof(Scene)).Length - 1)
+            SceneManager.LoadScene(activeScene.buildIndex + 1);
+        else
+            Debug.LogError($"CUSTOM ERROR: Attempt to load a scene that does not exist after: {activeScene.name}, enum index: {activeScene.buildIndex}. from ScenesManager.cs   LoadNextScene()");
     }
 
     public void LoadMainMenu()
@@ -35,6 +40,7 @@ public class ScenesManager : MonoBehaviour
     public enum Scene
     {
         MainMenu,
-        Level1
+        Level1,
+        Level2
     }
 }
